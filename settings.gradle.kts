@@ -10,3 +10,5 @@ plugins {
 }
 
 rootProject.name = "dialogik"
+include("host")
+include("script")
