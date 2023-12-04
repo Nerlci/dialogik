@@ -5,6 +5,7 @@ import java.io.File
 import kotlin.script.experimental.api.EvaluationResult
 import kotlin.script.experimental.api.ResultWithDiagnostics
 import kotlin.script.experimental.api.ScriptDiagnostic
+import kotlin.script.experimental.api.defaultImports
 import kotlin.script.experimental.host.toScriptSource
 import kotlin.script.experimental.jvm.dependenciesFromClassloader
 import kotlin.script.experimental.jvm.dependenciesFromCurrentContext
@@ -21,6 +22,9 @@ fun evalFile(scriptFile: File): ResultWithDiagnostics<EvaluationResult> {
             // variant 1: try to extract current classpath and take only a path to the specified "script.jar"
             dependenciesFromCurrentContext(
                 "script" /* script library jar name (exact or without a version) */
+            )
+            defaultImports(
+                "org.bupt.nerlci.dialogik.dsl.*"
             )
             // variant 2: try to extract current classpath and use it for the compilation without filtering
 //            dependenciesFromCurrentContext(wholeClasspath = true)
