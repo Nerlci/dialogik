@@ -1,36 +1,9 @@
 package org.bupt.nerlci.dialogik.dsl
 
 class RobotInstance(val conf: RobotConfig) {
-    fun start() {
-        for (action in conf.welcomeActions) {
-            val block = RobotActionBlock()
-            block.action()
-            println(block.response)
-        }
-        while (true) {
-            val msg = readLine()
-            if (msg == null) {
-                for (action in conf.goodbyeActions) {
-                    val block = RobotActionBlock()
-                    block.action()
-                    println(block.response)
-                    break
-                }
-            }
-
-            for (i in conf.receiveActions.keys) {
-                if (msg!!.matches(i)) {
-                    val message = RobotMessage(msg, i.matchEntire(msg)!!.groupValues)
-                    val block = RobotActionBlock(message)
-                    block.(conf.beforeAction)()
-                    val action = conf.receiveActions[i]
-                    action?.let { block.it() }
-                    block.(conf.afterAction)()
-                    println(block.response)
-                    break
-                }
-            }
-        }
+    fun start(handler: RobotHandler = ConsoleHandler()) {
+        handler.conf = conf
+        handler.start()
     }
 }
 
@@ -48,11 +21,11 @@ class RobotActionBlock(val message: RobotMessage = RobotMessage()) {
 }
 
 class RobotConfig {
-    val welcomeActions = mutableListOf<RobotActionBlock.() -> Unit>()
-    var beforeAction: RobotActionBlock.() -> Unit = {}
-    val receiveActions = mutableMapOf<Regex, RobotActionBlock.() -> Unit>()
-    var afterAction: RobotActionBlock.() -> Unit = {}
-    val goodbyeActions = mutableListOf<RobotActionBlock.() -> Unit>()
+    private val welcomeActions = mutableListOf<RobotActionBlock.() -> Unit>()
+    private var beforeAction: RobotActionBlock.() -> Unit = {}
+    private val receiveActions = mutableMapOf<Regex, RobotActionBlock.() -> Unit>()
+    private var afterAction: RobotActionBlock.() -> Unit = {}
+    private val goodbyeActions = mutableListOf<RobotActionBlock.() -> Unit>()
 
     fun welcome(block: RobotActionBlock.() -> Unit) {
         welcomeActions.add(block)
@@ -74,6 +47,49 @@ class RobotConfig {
 
     fun goodbye(block: RobotActionBlock.() -> Unit) {
         goodbyeActions.add(block)
+    }
+
+    fun getWelcomeActions(): RobotActionBlock.() -> Unit {
+        return {
+            for (action in welcomeActions) {
+                action()
+            }
+        }
+    }
+
+    fun getGoodbyeActions(): RobotActionBlock.() -> Unit {
+        return {
+            for (action in goodbyeActions) {
+                action()
+            }
+        }
+    }
+
+    fun getReceiveAction(msg: String): RobotActionBlock.() -> Unit {
+        for (i in receiveActions.keys) {
+            if (msg.matches(i)) {
+                return receiveActions[i]!!
+            }
+        }
+        return {}
+    }
+
+    fun getRobotMessage(msg: String): RobotMessage {
+        for (i in receiveActions.keys) {
+            if (msg.matches(i)) {
+                val params = i.matchEntire(msg)!!.groupValues
+                return RobotMessage(msg, params)
+            }
+        }
+        return RobotMessage(msg)
+    }
+
+    fun getBeforeAction(): RobotActionBlock.() -> Unit {
+        return beforeAction
+    }
+
+    fun getAfterAction(): RobotActionBlock.() -> Unit {
+        return afterAction
     }
 }
 

@@ -4,6 +4,14 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+### Vitepress ###
+
+node_modules/
+dist/
+.cache/
+yarn-error.log
+yarn.lock
+
 ### IntelliJ IDEA ###
 .idea/modules.xml
 .idea/jarRepositories.xml
