@@ -4,8 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="261082fe-3250-4147-a5de-1198ebed3b4f" name="更改" comment="implement basic functions and classes">
-      <change afterPath="$PROJECT_DIR$/script/src/main/kotlin/org/bupt/nerlci/dialogik/dsl/consoleHandler.kt" afterDir="false" />
+    <list default="true" id="261082fe-3250-4147-a5de-1198ebed3b4f" name="更改" comment="Add MiraiWebsocketHandler and update JDK to 17">
+      <change afterPath="$PROJECT_DIR$/script/src/main/kotlin/org/bupt/nerlci/dialogik/dsl/MiraiWebsocketHandler.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/host/src/main/resources/test.dk.kts" beforeDir="false" afterPath="$PROJECT_DIR$/host/src/main/resources/test.dk.kts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/script/src/main/kotlin/org/bupt/nerlci/dialogik/dsl/main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/script/src/main/kotlin/org/bupt/nerlci/dialogik/dsl/main.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -18,11 +21,28 @@
       <ProjectState />
     </projectState>
   </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand />
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Kotlin Class" />
         <option value="Kotlin File" />
+        <option value="Kotlin Interface" />
+        <option value="Class" />
+        <option value="Kotlin Class" />
       </list>
     </option>
   </component>
@@ -50,6 +70,9 @@
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="2" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
 }</component>
@@ -73,10 +96,11 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "模块",
+    "project.structure.last.edited": "项目",
     "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "ts.external.directory.path": "C:\\Users\\nerlc\\AppData\\Local\\Programs\\IntelliJ IDEA Ultimate\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -117,7 +141,14 @@
       <workItem from="1701141924205" duration="433000" />
       <workItem from="1701158889219" duration="27000" />
       <workItem from="1701209457300" duration="6000" />
-      <workItem from="1701652708904" duration="4198000" />
+      <workItem from="1701652708904" duration="8885000" />
+      <workItem from="1701691494904" duration="31000" />
+      <workItem from="1701758127981" duration="232000" />
+      <workItem from="1701758476929" duration="161000" />
+      <workItem from="1702003483967" duration="3126000" />
+      <workItem from="1702086985581" duration="98000" />
+      <workItem from="1702274767728" duration="6475000" />
+      <workItem from="1702283716750" duration="7271000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -143,7 +174,31 @@
       <option name="project" value="LOCAL" />
       <updated>1701662509034</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="implement basic functions and classes">
+      <option name="closed" value="true" />
+      <created>1701662623486</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1701662623486</updated>
+    </task>
+    <task id="LOCAL-00005" summary="depart ConsoleHandler from main.kt and use better structure for RobotConfig">
+      <option name="closed" value="true" />
+      <created>1702284100264</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1702284100264</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Add MiraiWebsocketHandler and update JDK to 17">
+      <option name="closed" value="true" />
+      <created>1702284125500</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1702284125500</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -163,7 +218,18 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial commit" />
     <MESSAGE value="config basic file arch for Kotlin Scripting" />
+    <MESSAGE value="fixup! implement basic functions and classes" />
+    <MESSAGE value="squash! implement basic functions and classes" />
     <MESSAGE value="implement basic functions and classes" />
-    <option name="LAST_COMMIT_MESSAGE" value="implement basic functions and classes" />
+    <MESSAGE value="depart ConsoleHandler from main.kt and use better structure for RobotConfig" />
+    <MESSAGE value="Add MiraiWebsocketHandler and update JDK to 17" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add MiraiWebsocketHandler and update JDK to 17" />
+  </component>
+  <component name="XDebuggerManager">
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="org.bupt.nerlci.dialogik.dsl.MiraiMessage" memberName="syncId" />
+      </pinned-members>
+    </pin-to-top-manager>
   </component>
 </project>

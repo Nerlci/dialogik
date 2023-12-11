@@ -1,7 +1,7 @@
 package org.bupt.nerlci.dialogik.dsl
 
-class RobotInstance(val conf: RobotConfig) {
-    fun start(handler: RobotHandler = ConsoleHandler()) {
+class RobotInstance(val conf: RobotConfig, val handler: RobotHandler = ConsoleHandler()) {
+    fun start() {
         handler.conf = conf
         handler.start()
     }
@@ -93,8 +93,8 @@ class RobotConfig {
     }
 }
 
-fun robot(vararg plugins: Plugin, block: RobotConfig.() -> Unit): RobotInstance {
+fun robot(vararg handler: RobotHandler, block: RobotConfig.() -> Unit): RobotInstance {
     val conf = RobotConfig()
     conf.block()
-    return RobotInstance(conf)
+    return RobotInstance(conf, handler[0])
 }

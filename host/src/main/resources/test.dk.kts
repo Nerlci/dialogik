@@ -1,6 +1,7 @@
+import org.bupt.nerlci.dialogik.dsl.MiraiWebsocketHandler
 import org.bupt.nerlci.dialogik.dsl.robot
 
-robot() {
+robot(MiraiWebsocketHandler()) {
     var ctr = 0
     welcome {
         send("Hello")
@@ -14,9 +15,9 @@ robot() {
     }
     receive("World(.*)") {
         val name = message.getParam(1)
-        send("Hello  " + name + "\n")
+        send("Hello $name\n")
         for (i in 0..10) {
-            send("Hello " + name + " " + i + "\n")
+            send("Hello $name $i\n")
         }
     }
     receive() {
