@@ -1,13 +1,13 @@
 package org.bupt.nerlci.dialogik.dsl
 
-class RobotInstance(val conf: RobotConfig, val handler: RobotHandler = ConsoleHandler()) {
+class RobotInstance(val conf: RobotConfig, val handler: RobotHandler) {
     fun start() {
         handler.conf = conf
         handler.start()
     }
 }
 
-class RobotMessage(val message: String = "", val params: List<String> = listOf()) {
+data class RobotMessage(val text: String = "", val params: List<String> = listOf()) {
 
     fun getParam(index: Int): String = params[index]
 }
@@ -31,11 +31,8 @@ class RobotConfig {
         welcomeActions.add(block)
     }
 
-    fun receive(msg: String? = null, block: RobotActionBlock.() -> Unit) {
-        if (msg == null)
-            receiveActions.put("(.*)".toRegex(), block)
-        else
-            receiveActions.put(msg.toRegex(), block);
+    fun receive(msg: String = ".*", block: RobotActionBlock.() -> Unit) {
+        receiveActions.put(msg.toRegex(), block);
     }
 
     fun before(block: RobotActionBlock.() -> Unit) {
@@ -77,7 +74,7 @@ class RobotConfig {
     fun getRobotMessage(msg: String): RobotMessage {
         for (i in receiveActions.keys) {
             if (msg.matches(i)) {
-                val params = i.matchEntire(msg)!!.groupValues
+                val params = i.matchEntire(msg)!!.groupValues // TODO: 修改正则表达式匹配，使其更加合适
                 return RobotMessage(msg, params)
             }
         }
@@ -93,8 +90,12 @@ class RobotConfig {
     }
 }
 
-fun robot(vararg handler: RobotHandler, block: RobotConfig.() -> Unit): RobotInstance {
+fun robot(handler: RobotHandler = ConsoleHandler(), block: RobotConfig.() -> Unit): RobotInstance {
     val conf = RobotConfig()
     conf.block()
-    return RobotInstance(conf, handler[0])
+    return RobotInstance(conf, handler)
+}
+
+fun robot(handler: RobotHandler = ConsoleHandler(), conf: RobotConfig): RobotInstance {
+    return RobotInstance(conf, handler)
 }
