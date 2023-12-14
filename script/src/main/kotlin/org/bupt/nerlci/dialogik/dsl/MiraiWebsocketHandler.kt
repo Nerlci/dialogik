@@ -6,6 +6,8 @@ import io.ktor.client.*
 import io.ktor.client.plugins.websocket.*
 import io.ktor.http.*
 import io.ktor.serialization.gson.*
+import kotlinx.coroutines.channels.consume
+import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -13,12 +15,14 @@ data class MiraiMessage(val syncId: String, val data: JsonObject)
 data class MiraiMessageElement(val type: String, val text: String)
 data class MiraiContent(val session: String, val target: Long, val messageChain: Array<MiraiMessageElement>)
 data class MiraiRespond(val syncId: String, val command: String, val subCommand: String?, val content: MiraiContent)
+data class MiraiConfig(val host: String, val port: Int, val verifyKey: String, val qq: Long)
 
-class MiraiWebsocketHandler() : RobotHandler {
+class MiraiWebsocketHandler(val miraiConfig: MiraiConfig) : RobotHandler {
     override var conf: RobotConfig = RobotConfig()
     var syncId = 0
+    var session = ""
 
-    suspend fun handleMessage(msg: String): String {
+    fun handleMessage(msg: String): String {
         val beforeAction = conf.getBeforeAction()
         val afterAction = conf.getAfterAction()
         val action = conf.getReceiveAction(msg)
@@ -37,7 +41,6 @@ class MiraiWebsocketHandler() : RobotHandler {
             val session = sessionMessage.data.get("session").asString
             while(true) {
                 val message = receiveDeserialized<MiraiMessage>()
-                println(message)
                 val messageChain = message.data.get("messageChain").asJsonArray
                 for (i in 0..<messageChain.size()) {
                     val msg = messageChain[i].asJsonObject
@@ -56,22 +59,21 @@ class MiraiWebsocketHandler() : RobotHandler {
                         )
                     )
                     syncId += 1
-                    println(responseMessage)
                     sendSerialized(responseMessage)
                 }
                 val result = receiveDeserialized<MiraiMessage>()
-                println(result)
             }
         } catch (e: Exception) {
+            e.printStackTrace()
             println("Error while receiving: " + e.localizedMessage)
         }
     }
 
     override fun start() {
-        val host = "localhost"
-        val port = 8080
-        val verifyKey = "1234567890"
-        val qq = 0
+        val host = miraiConfig.host
+        val port = miraiConfig.port
+        val verifyKey = miraiConfig.verifyKey
+        val qq = miraiConfig.qq
 
         val client = HttpClient {
             install(WebSockets) {
@@ -81,7 +83,7 @@ class MiraiWebsocketHandler() : RobotHandler {
 
         runBlocking {
             client.webSocket(method = HttpMethod.Get, host = "127.0.0.1", port = 8080, path = "/message?verifyKey=$verifyKey&qq=$qq") {
-                println("Connected to server")
+                println("Connected to Mirai")
                 val messageOutputRoutine = launch { outputMessages() }
                 messageOutputRoutine.join()
             }
@@ -89,5 +91,4 @@ class MiraiWebsocketHandler() : RobotHandler {
 
         client.close()
     }
-
 }
