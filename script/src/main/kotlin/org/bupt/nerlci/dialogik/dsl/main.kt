@@ -32,14 +32,14 @@ class RobotConfig {
     }
 
     fun receive(msg: String = ".*", block: RobotActionBlock.() -> Unit) {
-        receiveActions.put(msg.toRegex(), block);
+        receiveActions.put(msg.toRegex(), block)
     }
 
     fun before(block: RobotActionBlock.() -> Unit) {
-        beforeAction = block;
+        beforeAction = block
     }
     fun after(block: RobotActionBlock.() -> Unit) {
-        afterAction = block;
+        afterAction = block
     }
 
     fun goodbye(block: RobotActionBlock.() -> Unit) {

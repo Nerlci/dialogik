@@ -6,8 +6,6 @@ import io.ktor.client.*
 import io.ktor.client.plugins.websocket.*
 import io.ktor.http.*
 import io.ktor.serialization.gson.*
-import kotlinx.coroutines.channels.consume
-import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -82,7 +80,7 @@ class MiraiWebsocketHandler(val miraiConfig: MiraiConfig) : RobotHandler {
         }
 
         runBlocking {
-            client.webSocket(method = HttpMethod.Get, host = "127.0.0.1", port = 8080, path = "/message?verifyKey=$verifyKey&qq=$qq") {
+            client.webSocket(method = HttpMethod.Get, host = host, port = port, path = "/message?verifyKey=$verifyKey&qq=$qq") {
                 println("Connected to Mirai")
                 val messageOutputRoutine = launch { outputMessages() }
                 messageOutputRoutine.join()
